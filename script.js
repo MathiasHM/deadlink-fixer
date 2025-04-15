@@ -22,16 +22,18 @@ function submitRepo() {
       if (data.error) {
         output.textContent = "Error: " + data.error;
       } else {
-        let html = `<strong>${data.message}</strong><br>`;
-        if (data.pull_request_url) {
-			result += `\n\n🔗 Pull request: <a href="${data.pull_request_url}" target="_blank">${data.pull_request_url}</a>`;
+        let result = `<strong>${data.message}</strong>`;
+		if (data.pull_request_url) {
+			result += `<br><br>🔗 Pull request: <a href="${data.pull_request_url}" target="_blank">${data.pull_request_url}</a>`;
 		}
-        if (data.modified_files && data.modified_files.length > 0) {
-          html += `<br><strong>Modified files:</strong><br><pre>${data.modified_files.join('\n')}</pre>`;
-        } else if (!data.pull_request_url) {
-          html += `<br>No pull request created.`;
-        }
-        output.textContent = result;
+		if (data.modified_files?.length > 0) {
+			result += `<br><br>📝 Modified files:<ul>`;
+			data.modified_files.forEach(file => {
+			result += `<li>${file}</li>`;
+		});
+		result += `</ul>`;
+		}
+		output.innerHTML = result;
       }
     })
     .catch(err => {
