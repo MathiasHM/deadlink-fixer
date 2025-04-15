@@ -9,7 +9,7 @@ function submitRepo() {
 
   output.textContent = "Running Dead Link Fixer...";
 
-  fetch("http://localhost:5000/fix-dead-links", {
+  fetch("https://deadlink-fixer.onrender.com/fix-dead-links", {
     method: "POST",
     credentials: "include",
     headers: {
