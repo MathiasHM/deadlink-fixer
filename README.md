@@ -58,7 +58,9 @@ python -c "import secrets; print(secrets.token_hex(32))"
   | Start Command      | `flask run --host=0.0.0.0 --port=10000` |
   | Working Directory  | `backend/`                             |
 
-- Add environment variables from your `.env` file
+- Add environment variables from your `.env` file as well as
+FLASK_APP = app.py
+PORT = 10000
 
 #### 3. Set GitHub OAuth Callback
 
