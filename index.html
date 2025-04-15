@@ -1,23 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GitHub Dead Link Fixer</title>
+  <meta charset="UTF-8">
+  <title>Dead Link Fixer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background: #fefefe;
+      color: #333;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    a.button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #2da44e;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    #output {
+      background: #f4f4f4;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+      white-space: pre-wrap;
+    }
+    .user-info {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+    }
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-  <h1>🧹 GitHub Dead Link Fixer</h1>
-  <button onclick="window.location.href='https://deadlink-fixer.onrender.com/login'">
-    Login with GitHub
-  </button>
 
-  <div style="margin-top:20px">
-    <input type="text" id="repoUrl" placeholder="Enter GitHub repo URL" size="50"/>
-    <button onclick="submitRepo()">Fix Dead Links</button>
+  <h1>🧹 Dead Link Fixer</h1>
+
+  <p>
+    This tool scans any public or private GitHub repository for <strong>dead links</strong>,
+    automatically replaces them with <a href="https://archive.org/web/" target="_blank">archive.org</a> versions,
+    and opens a <strong>pull request</strong> with the changes.
+  </p>
+
+  <p>
+    Just log in with GitHub and paste in a repository URL.
+  </p>
+
+  <div id="userArea">
+    <a class="button" href="https://deadlink-fixer.onrender.com/login" id="loginBtn">🔐 Login with GitHub</a>
   </div>
 
-  <pre id="output" style="margin-top:20px; background:#f3f3f3; padding:10px;"></pre>
+  <div style="margin-top:2rem">
+    <input type="text" id="repoUrl" placeholder="Paste a GitHub repo URL" style="width: 100%; padding: 0.5rem;" />
+    <button onclick="submitRepo()" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">🛠 Fix Dead Links</button>
+  </div>
 
-  <script src="script.js"></script>
+  <pre id="output"></pre>
+
+  <div class="footer">
+    Source code: <a href="https://github.com/MathiasHM/deadlink-fixer" target="_blank">MathiasHM/deadlink-fixer</a>
+  </div>
+
+  <script>
+    const backend = "https://deadlink-fixer.onrender.com";
+
+    async function checkLogin() {
+      const res = await fetch(backend + "/", { credentials: "include" });
+      if (res.ok) {
+        try {
+          const user = await res.json();
+          const userArea = document.getElementById("userArea");
+          userArea.innerHTML = `<div class="user-info">✅ Logged in as <strong>${user.login}</strong></div>`;
+        } catch {
+          // not logged in or no JSON
+        }
+      }
+    }
+
+    async function submitRepo() {
+      const repoUrl = document.getElementById("repoUrl").value.trim();
+      const output = document.getElementById("output");
+      output.textContent = "";
+
+      if (!repoUrl) {
+        output.textContent = "⚠️ Please enter a GitHub repo URL.";
+        return;
+      }
+
+      output.textContent = "Running Dead Link Fixer...";
+
+      try {
+        const res = await fetch(backend + "/fix-dead-links", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ repo_url: repoUrl })
+        });
+
+        const data = await res.json();
+        if (res.status !== 200) {
+          output.textContent = "Error: " + (data.error || "Unknown error.");
+          return;
+        }
+
+        let result = `${data.message}`;
+        if (data.pull_request_url) {
+          result += `\n\n🔗 Pull request: ${data.pull_request_url}`;
+        }
+        if (data.modified_files?.length > 0) {
+          result += `\n\n📝 Modified files:\n${data.modified_files.join("\n")}`;
+        }
+
+        output.textContent = result;
+      } catch (err) {
+        output.textContent = "❌ Unexpected error: " + err.message;
+      }
+    }
+
+    checkLogin();
+  </script>
 </body>
 </html>
