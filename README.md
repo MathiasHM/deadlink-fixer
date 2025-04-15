@@ -17,7 +17,7 @@ A web app that scans GitHub repositories for dead links, replaces them with arch
 1. Go to your GitHub repo → **Settings → Pages**
 2. Under **Source**, select:
    - Branch: `main`
-   - Folder: `/frontend`
+   - Folder: `/root`
 3. Save changes
 4. Your frontend will be live at:
 ```
