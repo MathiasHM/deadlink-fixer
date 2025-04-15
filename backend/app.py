@@ -34,7 +34,7 @@ def callback():
     token = get_access_token(code)
     if token:
         session["access_token"] = token
-        return redirect(url_for("index"))
+        return redirect("https://mathiashm.github.io/deadlink-fixer/")
     return "OAuth failed", 400
 
 @app.route("/logout")
