@@ -57,7 +57,7 @@ def fix_links():
         return {"error": "Missing repo_url"}, 400
 
     try:
-        result = fix_repo_links(repo_url)
+        result = fix_repo_links(repo_url, session["access_token"])
 
         if not result["modified"]:
             return {

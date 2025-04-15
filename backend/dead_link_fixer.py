@@ -3,8 +3,7 @@ import re
 import requests
 import shutil
 from git import Repo
-from urllib.parse import urlparse
-from urllib.parse import quote
+from urllib.parse import urlparse, urlunparse, quote
 from pathlib import Path
 
 def is_dead(url):
@@ -33,17 +32,24 @@ def get_archive_url(url):
                 return fallback
     except Exception as e:
         print(f"❌ Archive lookup failed: {e}")
-
     return None
-
 
 def find_links(text):
     pattern = r'https?://[^\s)>\]"\']+'
     return re.findall(pattern, text)
 
-def clone_repo(repo_url, dest_folder):
+def inject_token_into_repo_url(repo_url, token):
+    parsed = urlparse(repo_url)
+    netloc_with_token = f"{token}@{parsed.netloc}"
+    return urlunparse(parsed._replace(netloc=netloc_with_token))
+
+def clone_repo(repo_url, dest_folder, token=None):
     if os.path.exists(dest_folder):
         shutil.rmtree(dest_folder)
+
+    if token:
+        repo_url = inject_token_into_repo_url(repo_url, token)
+
     return Repo.clone_from(repo_url, dest_folder)
 
 def fix_dead_links_in_file(file_path):
@@ -67,12 +73,12 @@ def fix_dead_links_in_file(file_path):
 
     return modified
 
-def fix_repo_links(repo_url):
+def fix_repo_links(repo_url, access_token=None):
     repo_name = Path(urlparse(repo_url).path).stem
     dest = f"temp_repos/{repo_name}"
     os.makedirs("temp_repos", exist_ok=True)
 
-    repo = clone_repo(repo_url, dest)
+    repo = clone_repo(repo_url, dest, token=access_token)
 
     modified_files = []
 
