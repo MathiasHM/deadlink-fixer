@@ -3,7 +3,7 @@ import requests
 
 CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID")
 CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET")
-REDIRECT_URI = "http://localhost:5000/callback"
+REDIRECT_URI = "https://deadlink-fixer.onrender.com/callback"
 
 def get_github_auth_url():
     return (
