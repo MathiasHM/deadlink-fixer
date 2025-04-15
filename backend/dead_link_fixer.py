@@ -27,7 +27,7 @@ def get_archive_url(url):
                 return archive_url
             else:
                 # 🔁 fallback to generic search link
-                fallback = f"https://web.archive.org/web/*/{quote(url)}"
+                fallback = f"https://web.archive.org/web/*/{url}"
                 print(f"🟠 No snapshot found — using fallback: {fallback}")
                 return fallback
     except Exception as e:
