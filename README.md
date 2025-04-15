@@ -59,10 +59,8 @@ python -c "import secrets; print(secrets.token_hex(32))"
   | Working Directory  | `backend/`                             |
 
 - Add environment variables from your `.env` file as well as
-- 
-FLASK_APP = app.py
-
-PORT = 10000
+- FLASK_APP = app.py
+- PORT = 10000
 
 #### 3. Set GitHub OAuth Callback
 
