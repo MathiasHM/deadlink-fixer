@@ -84,6 +84,11 @@ GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
 SECRET_KEY=random_flask_secret_key
 ```
 
+Generate a secret key:
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
 ### Frontend
 
 ```bash
