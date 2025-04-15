@@ -24,14 +24,14 @@ function submitRepo() {
       } else {
         let html = `<strong>${data.message}</strong><br>`;
         if (data.pull_request_url) {
-          html += `<a href="${data.pull_request_url}" target="_blank">View Pull Request</a><br>`;
-        }
+			result += `\n\n🔗 Pull request: <a href="${data.pull_request_url}" target="_blank">${data.pull_request_url}</a>`;
+		}
         if (data.modified_files && data.modified_files.length > 0) {
           html += `<br><strong>Modified files:</strong><br><pre>${data.modified_files.join('\n')}</pre>`;
         } else if (!data.pull_request_url) {
           html += `<br>No pull request created.`;
         }
-        output.innerHTML = html;
+        output.textContent = result;
       }
     })
     .catch(err => {
