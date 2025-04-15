@@ -75,6 +75,15 @@ https://your-backend-url.onrender.com/callback
 
 ## Local Development
 
+
+Create a `.env` file in `backend/` (do NOT commit it) with:
+
+```env
+GITHUB_CLIENT_ID=your_github_oauth_client_id
+GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
+SECRET_KEY=random_flask_secret_key
+```
+
 ### Frontend
 
 ```bash
