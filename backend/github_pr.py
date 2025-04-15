@@ -16,6 +16,11 @@ def create_branch_and_pr(repo, local_path, branch_name, modified_files, user_tok
         rel_path = os.path.relpath(file, local_path)
         repo.git.add(rel_path)
 
+    # Set identity for the commit (local only)
+    repo.config_writer().set_value("user", "name", "DeadLinkFixer Bot").release()
+    repo.config_writer().set_value("user", "email", "deadlinkfixer@example.com").release()
+
+    # Commit changes
     repo.git.commit("-m", "Fix dead links via DeadLinkFixer")
 
     # Try pushing the branch to origin
