@@ -83,3 +83,7 @@ def fix_links():
 
     except Exception as e:
         return {"error": str(e)}, 500
+
+@app.route("/debug-session")
+def debug_session():
+    return jsonify(dict(session=session))
