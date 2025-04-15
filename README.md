@@ -21,7 +21,7 @@ A web app that scans GitHub repositories for dead links, replaces them with arch
 3. Save changes
 4. Your frontend will be live at:
 ```
-https://yourusername.github.io/deadlink-fixer/
+https://web.archive.org/web/*/https://yourusername.github.io/deadlink-fixer/
 ```
 
 Make sure your `frontend/script.js` points to the deployed backend URL.
@@ -68,7 +68,7 @@ In [https://github.com/settings/developers](https://github.com/settings/develope
 
 - Set **Authorization callback URL** to:
 ```
-https://your-backend-url.onrender.com/callback
+https://web.archive.org/web/*/https://your-backend-url.onrender.com/callback
 ```
 
 ---
@@ -94,7 +94,7 @@ python -c "import secrets; print(secrets.token_hex(32))"
 ```bash
 cd frontend
 python -m http.server 8000
-# Visit http://localhost:8000
+# Visit https://web.archive.org/web/*/http://localhost:8000
 ```
 
 ### Backend
@@ -106,7 +106,7 @@ venv\Scripts\activate      # Windows
 source venv/bin/activate   # macOS/Linux
 pip install -r requirements.txt
 flask run
-# Visit http://localhost:5000
+# Visit https://web.archive.org/web/*/http://localhost:5000
 ```
 
 ---
