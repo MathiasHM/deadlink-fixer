@@ -22,18 +22,42 @@ function submitRepo() {
       if (data.error) {
         output.textContent = "Error: " + data.error;
       } else {
-        let result = `<strong>${data.message}</strong>`;
+		output.innerHTML = ""; // clear output
+
+		const msg = document.createElement("strong");
+		msg.textContent = data.message;
+		output.appendChild(msg);
+
 		if (data.pull_request_url) {
-			result += `<br><br>🔗 Pull request: <a href="${data.pull_request_url}" target="_blank">${data.pull_request_url}</a>`;
+		  const prLabel = document.createElement("div");
+		  prLabel.innerHTML = `🔗 Pull request: `;
+
+		  const prLink = document.createElement("a");
+		  prLink.href = data.pull_request_url;
+		  prLink.target = "_blank";
+		  prLink.textContent = data.pull_request_url;
+
+		  prLabel.appendChild(prLink);
+		  output.appendChild(document.createElement("br"));
+		  output.appendChild(document.createElement("br"));
+		  output.appendChild(prLabel);
 		}
+
 		if (data.modified_files?.length > 0) {
-			result += `<br><br>📝 Modified files:<ul>`;
-			data.modified_files.forEach(file => {
-			result += `<li>${file}</li>`;
-		});
-		result += `</ul>`;
+		  const listTitle = document.createElement("div");
+		  listTitle.innerHTML = `📝 Modified files:`;
+		  output.appendChild(document.createElement("br"));
+		  output.appendChild(listTitle);
+
+		  const list = document.createElement("ul");
+		  data.modified_files.forEach(file => {
+			const li = document.createElement("li");
+			li.textContent = file;
+			list.appendChild(li);
+		  });
+		  output.appendChild(list);
 		}
-		output.innerHTML = result;
+
       }
     })
     .catch(err => {
