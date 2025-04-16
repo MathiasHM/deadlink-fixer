@@ -82,7 +82,13 @@
           try {
             const user = await res.json();
             const userArea = document.getElementById("userArea");
-            userArea.textContent = `✅ Logged in as ${user.login}`;
+            userArea.innerHTML = `
+				<div class="user-info">
+					✅ Logged in as <strong>${user.login}</strong><br>
+					<button onclick="logout()" style="margin-top: 0.5rem;">🚪 Logout</button>
+				</div>
+				`;
+
           } catch {
             // not logged in or no JSON
           }
