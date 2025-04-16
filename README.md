@@ -17,10 +17,23 @@ Dead Link Fixer is a web tool that scans GitHub repositories for dead hyperlinks
 
 ### Frontend (GitHub Pages)
 1. Upload contents of `/frontend` to the root of your GitHub repository
-2. Go to `Settings → Pages`
-3. Set:
+2. Make sure the following files exist:
+   - `index.html`
+   - `script.js`
+   - `config.js`
+3. Go to `Settings → Pages`
+4. Set:
    - Source: `main`
    - Folder: `/ (root)`
+
+#### 📁 Example `config.js`
+```js
+// config.js
+const CONFIG = {
+  BACKEND_URL: "https://deadlink-fixer.onrender.com"
+};
+```
+Update the value to match your own backend URL when self-hosting.
 
 ### Backend (Render)
 1. [Create a GitHub OAuth App](https://github.com/settings/developers)

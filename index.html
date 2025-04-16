@@ -56,7 +56,7 @@
     Just log in with GitHub and paste in a repository URL. Private URLs are supported.
   </p>
 				<div id="userArea">
-					<a class="button" href="https://deadlink-fixer.onrender.com/login" id="loginBtn">🔐 Login with GitHub</a>
+					<a class="button" href="#" onclick="window.location.href=CONFIG.BACKEND_URL + '/login'" id="loginBtn">🔐 Login with GitHub</a>
 				</div>
 				<div style="margin-top:2rem">
 					<input type="text" id="repoUrl" placeholder="Paste a GitHub repo URL" style="width: 100%; padding: 0.5rem;"/>
@@ -66,8 +66,11 @@
 				<div class="footer">
     Source code: <a href="https://github.com/MathiasHM/deadlink-fixer" target="_blank">MathiasHM/deadlink-fixer</a>
 				</div>
-				<script>
-    const backend = "https://deadlink-fixer.onrender.com";
+				<script src="config.js">-->
+
+<script src="script.js">-->
+
+<!--
 
     async function checkLogin() {
       const res = await fetch(backend + "/", { credentials: "include" });
@@ -124,6 +127,6 @@
     }
 
     checkLogin();
-  </script>
-			</body>
-		</html>
+  -->
+					</body>
+				</html>
