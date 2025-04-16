@@ -68,5 +68,9 @@ function submitRepo() {
 }
 
 function loginWithGithub() {
+  if (typeof CONFIG === 'undefined' || !CONFIG.BACKEND_URL) {
+    alert("Backend URL not configured.");
+    return;
+  }
   window.location.href = CONFIG.BACKEND_URL + "/login";
 }
