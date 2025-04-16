@@ -15,16 +15,14 @@ function submitRepo() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            repo_url: repoUrl
-        })
+        body: JSON.stringify({ repo_url: repoUrl })
     })
     .then(response => response.json())
     .then(data => {
         if (data.error) {
             output.textContent = "Error: " + data.error;
         } else {
-            output.innerHTML = ""; // clear output
+            output.textContent = ""; // clear output
 
             const msg = document.createElement("strong");
             msg.textContent = data.message;
@@ -32,11 +30,12 @@ function submitRepo() {
 
             if (data.pull_request_url) {
                 const prLabel = document.createElement("div");
-                prLabel.innerHTML = `🔗 Pull request: `;
+                prLabel.textContent = `🔗 Pull request: `;
 
                 const prLink = document.createElement("a");
                 prLink.href = data.pull_request_url;
                 prLink.target = "_blank";
+                prLink.rel = "noopener noreferrer"; // ✅ added
                 prLink.textContent = data.pull_request_url;
 
                 prLabel.appendChild(prLink);
@@ -47,7 +46,7 @@ function submitRepo() {
 
             if (data.modified_files?.length > 0) {
                 const listTitle = document.createElement("div");
-                listTitle.innerHTML = `📝 Modified files:`;
+                listTitle.textContent = `📝 Modified files:`;
                 output.appendChild(document.createElement("br"));
                 output.appendChild(listTitle);
 
@@ -59,7 +58,6 @@ function submitRepo() {
                 });
                 output.appendChild(list);
             }
-
         }
     })
     .catch(err => {

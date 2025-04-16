@@ -14,7 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY")
 app.config["SESSION_TYPE"] = "filesystem"
-app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
+app.config["SESSION_COOKIE_SECURE"] = True
 Session(app)
 CORS(app, supports_credentials=True)
 
@@ -57,6 +57,8 @@ def fix_links():
     repo_url = data.get("repo_url")
     if not repo_url:
         return {"error": "Missing repo_url"}, 400
+    if not repo_url.startswith("https://github.com/") or ".." in repo_url:
+        return {"error": "Invalid repository URL"}, 400
 
     try:
         result = fix_repo_links(repo_url, session["access_token"])
@@ -90,3 +92,4 @@ def debug_session():
         return jsonify({"session": dict(session)})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
