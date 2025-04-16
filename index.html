@@ -134,6 +134,14 @@
           output.textContent = "❌ Unexpected error: " + err.message;
         }
       }
+	  function logout() {
+		fetch("https://deadlink-fixer.onrender.com/logout", {
+			method: "GET",
+			credentials: "include"
+		}).then(() => {
+			window.location.reload();
+		});
+}
 
       checkLogin();
     </script>
