@@ -66,14 +66,11 @@
 				<div class="footer">
     Source code: <a href="https://github.com/MathiasHM/deadlink-fixer" target="_blank">MathiasHM/deadlink-fixer</a>
 				</div>
-				<script src="config.js">-->
-
-<script src="script.js">-->
-
-<!--
+				<script src="config.js"></script>
+				<script src="script.js"></script>
 
     async function checkLogin() {
-      const res = await fetch(backend + "/", { credentials: "include" });
+      const res = await fetch(CONFIG.BACKEND_URL + "/", { credentials: "include" });
       if (res.ok) {
         try {
           const user = await res.json();
@@ -99,7 +96,7 @@
       output.textContent = "Running Dead Link Fixer...";
 
       try {
-        const res = await fetch(backend + "/fix-dead-links", {
+        const res = await fetch(CONFIG.BACKEND_URL + "/fix-dead-links", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
