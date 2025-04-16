@@ -1,117 +1,115 @@
-# Dead Link Fixer
+# 🧹 Dead Link Fixer
 
-A web app that scans GitHub repositories for dead links, replaces them with archive.org snapshots, and automatically opens a pull request with the fixes. Based on an idea by Yush G who has listed a bunch of great idea at https://aayushg.com/ideas.
+Dead Link Fixer is a web tool that scans GitHub repositories for dead hyperlinks, replaces them with archive.org snapshots, and automatically opens a pull request with the fixes. Based on an idea by Yush G who has listed a bunch of great idea at https://aayushg.com/ideas.
 
-- GitHub OAuth login
-- Dead link detection and replacement
-- Pull request creation via GitHub API
-- Clean, browser-based frontend
-- Deployable via GitHub Pages + Render
+## ✨ Features
 
----
-
-## Deployment
-
-### Frontend: GitHub Pages
-
-1. Go to your GitHub repo → **Settings → Pages**
-2. Under **Source**, select:
-   - Branch: `main`
-   - Folder: `/root`
-3. Save changes
-4. Your frontend will be live at:
-```
-https://yourusername.github.io/deadlink-fixer/
-```
-
-Make sure your `frontend/script.js` points to the deployed backend URL.
+- Detects dead links in `.md` and text files
+- Replaces dead URLs with working archive.org snapshots
+- Authenticates via GitHub OAuth
+- Supports public and private repositories
+- Fully automated PR creation
+- Runs on GitHub Pages + Render backend
 
 ---
 
-### Backend: Render
+## 🚀 Deployment
 
-#### 1. Set up environment variables
+### Frontend (GitHub Pages)
+1. Upload contents of `/frontend` to the root of your GitHub repository
+2. Go to `Settings → Pages`
+3. Set:
+   - Source: `main`
+   - Folder: `/ (root)`
 
-Create a `.env` file in `backend/` (do NOT commit it) with:
+### Backend (Render)
+1. [Create a GitHub OAuth App](https://github.com/settings/developers)
+   - Authorization callback: `https://<your-backend>.onrender.com/callback`
+   - Homepage URL: `https://<your-username>.github.io/deadlink-fixer/`
+
+2. Deploy your backend folder to Render
+   - Build command: `pip install -r requirements.txt`
+   - Start command: `flask run --host=0.0.0.0 --port=10000`
+   - Runtime: Python 3.11+
+
+3. Set the following environment variables in Render:
 
 ```env
-GITHUB_CLIENT_ID=your_github_oauth_client_id
-GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
-SECRET_KEY=random_flask_secret_key
+FLASK_APP=app.py
+PORT=10000
+SECRET_KEY=your_flask_secret
+GITHUB_CLIENT_ID=your_client_id
+GITHUB_CLIENT_SECRET=your_secret
+GITHUB_AUTHORIZE_URL=https://github.com/login/oauth/authorize
+GITHUB_TOKEN_URL=https://github.com/login/oauth/access_token
+GITHUB_API_BASE_URL=https://api.github.com
+OAUTH_REDIRECT_URI=https://your-backend.onrender.com/callback
+FRONTEND_URL=https://yourusername.github.io/deadlink-fixer/
+DEFAULT_BRANCH=main
+DEFAULT_PR_TITLE=Fix dead links
+DEFAULT_PR_BODY=Fix dead links via DeadLinkFixer
 ```
 
-Generate a secret key:
-```bash
-python -c "import secrets; print(secrets.token_hex(32))"
-```
+### 🔑 Where to Get Environment Variables
 
-#### 2. Deploy to Render
+| Variable                | Where to Get It                                                                 |
+|------------------------|----------------------------------------------------------------------------------|
+| `SECRET_KEY`           | Run `python -c "import secrets; print(secrets.token_hex(32))"` to generate one |
+| `GITHUB_CLIENT_ID`     | From [GitHub Developer Settings → OAuth Apps](https://github.com/settings/developers) |
+| `GITHUB_CLIENT_SECRET` | From the same place as above                                                    |
+| `GITHUB_AUTHORIZE_URL` | Usually `https://github.com/login/oauth/authorize`                             |
+| `GITHUB_TOKEN_URL`     | Usually `https://github.com/login/oauth/access_token`                          |
+| `GITHUB_API_BASE_URL`  | Usually `https://api.github.com`                                               |
+| `OAUTH_REDIRECT_URI`   | Matches your Render service: `https://your-backend.onrender.com/callback`     |
+| `FRONTEND_URL`         | Your GitHub Pages site: `https://yourusername.github.io/deadlink-fixer/`       |
+| `DEFAULT_BRANCH`       | Target PR branch (`main`, `master`, etc.)                                      |
+| `DEFAULT_PR_TITLE`     | Text for the PR title                                                          |
+| `DEFAULT_PR_BODY`      | Text for the PR body                                                           |
 
-- Go to [https://render.com](https://render.com)
-- Click **"New Web Service"**
-- Select your GitHub repo
-- Set:
-
-  | Setting            | Value                                 |
-  |--------------------|---------------------------------------|
-  | Build Command      | `pip install -r backend/requirements.txt` |
-  | Start Command      | `flask run --host=0.0.0.0 --port=10000` |
-  | Working Directory  | `backend/`                             |
-
-- Add environment variables from your `.env` file as well as
-- FLASK_APP = app.py
-- PORT = 10000
-
-#### 3. Set GitHub OAuth Callback
-
-In [https://github.com/settings/developers](https://github.com/settings/developers):
-
-- Set **Authorization callback URL** to:
-```
-https://your-backend-url.onrender.com/callback
-```
+4. (Optional) Add `.nojekyll` to your GitHub Pages root if using raw `index.html`
 
 ---
 
-## Local Development
+## 🧪 Local Development
 
-
-Create a `.env` file in `backend/` (do NOT commit it) with:
-
-```env
-GITHUB_CLIENT_ID=your_github_oauth_client_id
-GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
-SECRET_KEY=random_flask_secret_key
-```
-
-Generate a secret key:
-```bash
-python -c "import secrets; print(secrets.token_hex(32))"
-```
-
-### Frontend
+Create (do NOT share) a `.env` file based on `.env.example`:
 
 ```bash
-cd frontend
-python -m http.server 8000
-# Visit http://localhost:8000
+cp .env.example .env
 ```
 
-### Backend
-
+Then run locally:
 ```bash
 cd backend
-python -m venv venv
-venv\Scripts\activate      # Windows
-source venv/bin/activate   # macOS/Linux
-pip install -r requirements.txt
-flask run
-# Visit http://localhost:5000
+python -m flask run
 ```
 
 ---
 
-## License
+## 🐳 Docker (Optional)
+_Coming soon: deploy the entire backend in one command using Docker._
 
-This project is licensed under the [GNU GPL v3.0](LICENSE).
-See the license file for details.
+---
+
+## 🙋 FAQ
+
+- **Does this work for GitHub Enterprise or GitLab?**
+  GitHub only, for now. Support for other platforms is in progress.
+
+- **Why doesn't login work on mobile?**
+  Mobile browsers may block cross-site cookies. Use desktop Chrome/Firefox for best results, or self-host frontend and backend under one domain.
+
+- **Can I preview changes before PR is created?**
+  Not yet — coming soon.
+
+---
+
+## 📄 License
+
+This project is licensed under the GPL-3.0 License.
+
+---
+
+## 👨‍💻 Author
+Made by [Mathias Hamza Mirza](https://github.com/MathiasHM). Contributions welcome!
+

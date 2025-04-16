@@ -38,7 +38,7 @@ def callback():
     token = get_access_token(code)
     if token:
         session["access_token"] = token
-        return redirect("https://mathiashm.github.io/deadlink-fixer/")
+        return redirect(os.environ.get("FRONTEND_URL", "http://localhost:3000"))
     return "OAuth failed", 400
 
 
