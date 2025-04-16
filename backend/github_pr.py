@@ -5,6 +5,7 @@ import os
 import shutil
 import stat
 
+
 def create_branch_and_pr(repo, local_path, branch_name, modified_files, user_token):
     origin_url = repo.remotes.origin.url
 
@@ -18,7 +19,9 @@ def create_branch_and_pr(repo, local_path, branch_name, modified_files, user_tok
 
     # Set identity for the commit (local only)
     repo.config_writer().set_value("user", "name", "DeadLinkFixer Bot").release()
-    repo.config_writer().set_value("user", "email", "deadlinkfixer@example.com").release()
+    repo.config_writer().set_value(
+        "user", "email", "deadlinkfixer@example.com"
+    ).release()
 
     # Commit changes
     repo.git.commit("-m", "Fix dead links via DeadLinkFixer")
@@ -30,7 +33,7 @@ def create_branch_and_pr(repo, local_path, branch_name, modified_files, user_tok
         return {
             "message": f"Push failed: {parse_git_error(e)}",
             "pull_request_url": None,
-            "is_existing_pr": False
+            "is_existing_pr": False,
         }
     finally:
         cleanup_local_repo(local_path)
@@ -44,13 +47,15 @@ def create_branch_and_pr(repo, local_path, branch_name, modified_files, user_tok
     default_branch = gh_repo.default_branch
 
     # Check for existing open PR from this branch
-    existing_prs = gh_repo.get_pulls(state="open", head=f"{gh_repo.owner.login}:{branch_name}")
+    existing_prs = gh_repo.get_pulls(
+        state="open", head=f"{gh_repo.owner.login}:{branch_name}"
+    )
     if existing_prs.totalCount > 0:
         pr = existing_prs[0]
         return {
             "message": "Dead links fixed. An existing pull request was found.",
             "pull_request_url": pr.html_url,
-            "is_existing_pr": True
+            "is_existing_pr": True,
         }
 
     # Create new PR
@@ -59,19 +64,20 @@ def create_branch_and_pr(repo, local_path, branch_name, modified_files, user_tok
             title="Fix dead links",
             body="This pull request was automatically created by DeadLinkFixer.",
             head=branch_name,
-            base=default_branch
+            base=default_branch,
         )
         return {
             "message": "Dead links fixed and pull request created.",
             "pull_request_url": pr.html_url,
-            "is_existing_pr": False
+            "is_existing_pr": False,
         }
     except GithubException as e:
         return {
             "message": f"Failed to create PR: {e.data}",
             "pull_request_url": None,
-            "is_existing_pr": False
+            "is_existing_pr": False,
         }
+
 
 def parse_git_error(e):
     if hasattr(e, "stderr") and e.stderr:
@@ -81,6 +87,7 @@ def parse_git_error(e):
                 return line
     return str(e)
 
+
 def cleanup_local_repo(path):
     try:
         shutil.rmtree(path, onerror=force_remove_readonly)
@@ -88,11 +95,13 @@ def cleanup_local_repo(path):
     except Exception as e:
         print(f"Failed to delete local repo: {e}")
 
+
 def force_remove_readonly(func, path, exc_info):
     import errno
+
     exc_type, exc_value, _ = exc_info
     if isinstance(exc_value, PermissionError) or (
-        hasattr(exc_value, 'winerror') and exc_value.winerror == 5
+        hasattr(exc_value, "winerror") and exc_value.winerror == 5
     ):
         try:
             os.chmod(path, stat.S_IWRITE)

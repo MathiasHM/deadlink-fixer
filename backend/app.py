@@ -14,12 +14,10 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY")
 app.config["SESSION_TYPE"] = "filesystem"
-app.config.update(
-    SESSION_COOKIE_SAMESITE="None",
-    SESSION_COOKIE_SECURE=True
-)
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 Session(app)
 CORS(app, supports_credentials=True)
+
 
 @app.route("/")
 def index():
@@ -28,9 +26,11 @@ def index():
         return jsonify(user)
     return '<a href="/login">Login with GitHub</a>'
 
+
 @app.route("/login")
 def login():
     return redirect(get_github_auth_url())
+
 
 @app.route("/callback")
 def callback():
@@ -41,10 +41,12 @@ def callback():
         return redirect("https://mathiashm.github.io/deadlink-fixer/")
     return "OAuth failed", 400
 
+
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
+
 
 @app.route("/fix-dead-links", methods=["POST"])
 def fix_links():
@@ -60,10 +62,7 @@ def fix_links():
         result = fix_repo_links(repo_url, session["access_token"])
 
         if not result["modified"]:
-            return {
-                "message": "No dead links found.",
-                "modified_files": []
-            }
+            return {"message": "No dead links found.", "modified_files": []}
 
         branch_name = "fix/dead-links-001"
         pr_result = create_branch_and_pr(
@@ -71,22 +70,23 @@ def fix_links():
             local_path=result["local_path"],
             branch_name=branch_name,
             modified_files=result["modified"],
-            user_token=session["access_token"]
+            user_token=session["access_token"],
         )
 
         return {
             "message": pr_result["message"],
             "pull_request_url": pr_result["pull_request_url"],
             "modified_files": result["modified"],
-            "existing_pr": pr_result["is_existing_pr"]
+            "existing_pr": pr_result["is_existing_pr"],
         }
 
     except Exception as e:
         return {"error": str(e)}, 500
 
+
 @app.route("/debug-session")
 def debug_session():
     try:
-        return jsonify({ "session": dict(session) })
+        return jsonify({"session": dict(session)})
     except Exception as e:
-        return jsonify({ "error": str(e) }), 500
+        return jsonify({"error": str(e)}), 500

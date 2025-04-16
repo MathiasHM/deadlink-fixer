@@ -6,6 +6,7 @@ from git import Repo
 from urllib.parse import urlparse, urlunparse, quote
 from pathlib import Path
 
+
 def is_dead(url):
     try:
         response = requests.head(url, allow_redirects=True, timeout=5)
@@ -13,10 +14,13 @@ def is_dead(url):
     except:
         return True
 
+
 def get_archive_url(url):
     print(f"Checking archive.org for: {url}")
     try:
-        response = requests.get(f"https://archive.org/wayback/available?url={url}", timeout=10)
+        response = requests.get(
+            f"https://archive.org/wayback/available?url={url}", timeout=10
+        )
         print(f"Raw JSON: {response.text}")
         if response.ok:
             data = response.json()
@@ -34,14 +38,17 @@ def get_archive_url(url):
         print(f"❌ Archive lookup failed: {e}")
     return None
 
+
 def find_links(text):
     pattern = r'https?://[^\s)>\]"\']+'
     return re.findall(pattern, text)
+
 
 def inject_token_into_repo_url(repo_url, token):
     parsed = urlparse(repo_url)
     netloc_with_token = f"{token}@{parsed.netloc}"
     return urlunparse(parsed._replace(netloc=netloc_with_token))
+
 
 def clone_repo(repo_url, dest_folder, token=None):
     if os.path.exists(dest_folder):
@@ -51,6 +58,7 @@ def clone_repo(repo_url, dest_folder, token=None):
         repo_url = inject_token_into_repo_url(repo_url, token)
 
     return Repo.clone_from(repo_url, dest_folder)
+
 
 def fix_dead_links_in_file(file_path):
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
@@ -73,6 +81,7 @@ def fix_dead_links_in_file(file_path):
 
     return modified
 
+
 def fix_repo_links(repo_url, access_token=None):
     repo_name = Path(urlparse(repo_url).path).stem
     dest = f"temp_repos/{repo_name}"
@@ -93,5 +102,5 @@ def fix_repo_links(repo_url, access_token=None):
         "modified": modified_files,
         "local_path": dest,
         "repo_name": repo_name,
-        "repo_obj": repo
+        "repo_obj": repo,
     }

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dead Link Fixer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
+	<head>
+		<meta charset="UTF-8">
+			<title>Dead Link Fixer</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+				<style>
     body {
       font-family: system-ui, sans-serif;
       padding: 2rem;
@@ -44,37 +44,29 @@
       color: #777;
     }
   </style>
-</head>
-<body>
-
-  <h1>🧹 Dead Link Fixer</h1>
-
-  <p>
+			</head>
+			<body>
+				<h1>🧹 Dead Link Fixer</h1>
+				<p>
     This tool scans any public or private GitHub repository for <strong>dead links</strong>,
     automatically replaces them with <a href="https://archive.org/web/" target="_blank">archive.org</a> versions,
     and opens a <strong>pull request</strong> with the changes.
   </p>
-
-  <p>
+				<p>
     Just log in with GitHub and paste in a repository URL. Private URLs are supported.
   </p>
-
-  <div id="userArea">
-    <a class="button" href="https://deadlink-fixer.onrender.com/login" id="loginBtn">🔐 Login with GitHub</a>
-  </div>
-
-  <div style="margin-top:2rem">
-    <input type="text" id="repoUrl" placeholder="Paste a GitHub repo URL" style="width: 100%; padding: 0.5rem;" />
-    <button onclick="submitRepo()" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">🛠 Fix Dead Links</button>
-  </div>
-
-  <div id="output" style="margin-top:20px;"></div>
-
-  <div class="footer">
+				<div id="userArea">
+					<a class="button" href="https://deadlink-fixer.onrender.com/login" id="loginBtn">🔐 Login with GitHub</a>
+				</div>
+				<div style="margin-top:2rem">
+					<input type="text" id="repoUrl" placeholder="Paste a GitHub repo URL" style="width: 100%; padding: 0.5rem;"/>
+					<button onclick="submitRepo()" style="margin-top: 0.5rem; padding: 0.5rem 1rem;">🛠 Fix Dead Links</button>
+				</div>
+				<div id="output" style="margin-top:20px;"/>
+				<div class="footer">
     Source code: <a href="https://github.com/MathiasHM/deadlink-fixer" target="_blank">MathiasHM/deadlink-fixer</a>
-  </div>
-
-  <script>
+				</div>
+				<script>
     const backend = "https://deadlink-fixer.onrender.com";
 
     async function checkLogin() {
@@ -83,7 +75,8 @@
         try {
           const user = await res.json();
           const userArea = document.getElementById("userArea");
-          userArea.innerHTML = `<div class="user-info">✅ Logged in as <strong>${user.login}</strong></div>`;
+          userArea.innerHTML = `<div class="user-info">✅ Logged in as <strong>${user.login}</strong>
+					</div>`;
         } catch {
           // not logged in or no JSON
         }
@@ -132,5 +125,5 @@
 
     checkLogin();
   </script>
-</body>
-</html>
+			</body>
+		</html>
