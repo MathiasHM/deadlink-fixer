@@ -30,6 +30,7 @@ Dead Link Fixer is a web tool that scans GitHub repositories for dead hyperlinks
 2. Deploy your backend folder to Render
    - Build command: `pip install -r requirements.txt`
    - Start command: `flask run --host=0.0.0.0 --port=10000`
+   - Start command for production: `gunicorn -w 4 -b 0.0.0.0:$PORT app:app`
    - Runtime: Python 3.11+
 
 3. Set the following environment variables in Render:
