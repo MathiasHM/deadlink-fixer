@@ -75,8 +75,12 @@
         try {
           const user = await res.json();
           const userArea = document.getElementById("userArea");
-          userArea.innerHTML = `<div class="user-info">✅ Logged in as <strong>${user.login}</strong>
-					</div>`;
+          userArea.innerHTML = `
+			<div class="user-info">
+				✅ Logged in as <strong>${user.login}</strong><br>
+				<button onclick="logout()" style="margin-top: 0.5rem;">🚪 Logout</button>
+			</div>
+`;
         } catch {
           // not logged in or no JSON
         }
@@ -122,6 +126,12 @@
         output.textContent = "❌ Unexpected error: " + err.message;
       }
     }
+	function logout() {
+		fetch(backend + "/logout", { credentials: "include" })
+			.then(() => {
+			window.location.reload();
+			});
+	}
 
     checkLogin();
   </script>
