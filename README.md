@@ -1,6 +1,6 @@
 # Dead Link Fixer
 
-A web app that scans GitHub repositories for dead links, replaces them with archive.org snapshots, and automatically opens a pull request with the fixes.
+A web app that scans GitHub repositories for dead links, replaces them with archive.org snapshots, and automatically opens a pull request with the fixes. Based on an idea by Yush G who has listed a bunch of great idea at https://aayushg.com/ideas.
 
 - GitHub OAuth login
 - Dead link detection and replacement
