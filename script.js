@@ -66,7 +66,3 @@ function submitRepo() {
         output.textContent = "Unexpected error: " + err;
     });
 }
-
-function loginWithGithub() {
-  window.location.href = CONFIG.BACKEND_URL + "/login";
-}
