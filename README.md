@@ -1,8 +1,8 @@
-# 🧹 Dead Link Fixer
+# Dead Link Fixer
 
 Dead Link Fixer is a web tool that scans GitHub repositories for dead hyperlinks, replaces them with archive.org snapshots, and automatically opens a pull request with the fixes. Based on an idea by Yush G who has listed a bunch of great idea at https://aayushg.com/ideas.
 
-## ✨ Features
+## Features
 
 - Detects dead links in `.md` and text files
 - Replaces dead URLs with working archive.org snapshots
@@ -13,7 +13,7 @@ Dead Link Fixer is a web tool that scans GitHub repositories for dead hyperlinks
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ### Frontend (GitHub Pages)
 1. Upload contents of `/frontend` to the root of your GitHub repository
@@ -51,7 +51,7 @@ DEFAULT_PR_TITLE=Fix dead links
 DEFAULT_PR_BODY=Fix dead links via DeadLinkFixer
 ```
 
-### 🔑 Where to Get Environment Variables
+### Where to Get Environment Variables
 
 | Variable                | Where to Get It                                                                 |
 |------------------------|----------------------------------------------------------------------------------|
@@ -71,7 +71,7 @@ DEFAULT_PR_BODY=Fix dead links via DeadLinkFixer
 
 ---
 
-## 🧪 Local Development
+## Local Development
 
 Create (do NOT share) a `.env` file based on `.env.example`:
 
@@ -87,22 +87,17 @@ python -m flask run
 
 ---
 
-## 🐳 Docker (Optional)
-_Coming soon: deploy the entire backend in one command using Docker._
-
----
-
-## 🙋 FAQ
+## FAQ
 
 - **Does this work for GitHub Enterprise or GitLab?**
-  GitHub only, for now. Support for other platforms is in progress.
+  GitHub only.
 
 - **Why doesn't login work on mobile?**
   Mobile browsers may block cross-site cookies. Use desktop Chrome/Firefox for best results, or self-host frontend and backend under one domain.
 
 - **Can I preview changes before PR is created?**
-  Not yet — coming soon.
-
+  Nope.
+  
 ---
 
 ## 📄 License
@@ -111,6 +106,5 @@ This project is licensed under the GPL-3.0 License.
 
 ---
 
-## 👨‍💻 Author
-Made by [Mathias Hamza Mirza](https://github.com/MathiasHM). Contributions welcome!
-
+## Author
+Made by [Mathias Hamza Mirza](https://github.com/MathiasHM).
